@@ -12,6 +12,33 @@ enum Peran {
   buyer
 }
 
+enum StatusVerifikasi {
+  pending
+  under_review
+  approved
+  rejected
+}
+
+enum AksiVerifikasi {
+  review
+  approve
+  reject
+}
+
+enum StatusPesanan {
+  pending_payment
+  processing
+  shipped
+  completed
+  cancelled
+}
+
+enum StatusPembayaran {
+  pending
+  paid
+  failed
+}
+
 model Pengguna {
   id_pengguna   Int      @id @default(autoincrement())
   nama          String
@@ -49,16 +76,16 @@ model Alamat_Buyer {
 }
 
 model Profil_UMKM {
-  id_umkm              Int       @id @default(autoincrement())
+  id_umkm              Int                @id @default(autoincrement())
   nama_usaha           String
   url_dokumen_legalitas String
-  status_verifikasi    String
-  alamat               String    @db.Text
+  status_verifikasi    StatusVerifikasi
+  alamat               String             @db.Text
   latitude             Float?
   longitude            Float?
-  diajukan_pada        DateTime  @default(now())
+  diajukan_pada        DateTime           @default(now())
   diverifikasi_pada    DateTime?
-  id_pengguna          Int       @unique
+  id_pengguna          Int                @unique
 
   pengguna       Pengguna         @relation(fields: [id_pengguna], references: [id_pengguna])
   log_verifikasi Log_Verifikasi[]
@@ -68,10 +95,10 @@ model Profil_UMKM {
 }
 
 model Log_Verifikasi {
-  id_log      Int      @id @default(autoincrement())
-  aksi        String
-  alasan      String?  @db.Text
-  dibuat_pada DateTime @default(now())
+  id_log      Int             @id @default(autoincrement())
+  aksi        AksiVerifikasi
+  alasan      String?         @db.Text
+  dibuat_pada DateTime        @default(now())
   id_umkm     Int
   id_admin    Int
 
@@ -124,11 +151,11 @@ model Item_Keranjang {
 }
 
 model Pesanan {
-  id_pesanan      Int      @id @default(autoincrement())
-  status          String
+  id_pesanan      Int            @id @default(autoincrement())
+  status          StatusPesanan
   total_harga     Int
-  dibuat_pada     DateTime @default(now())
-  diperbarui_pada DateTime @updatedAt
+  dibuat_pada     DateTime       @default(now())
+  diperbarui_pada DateTime       @updatedAt
   kurir           String?
   ongkos_kirim    Int
   kode_resi       String?
@@ -157,13 +184,13 @@ model Item_Pesanan {
 }
 
 model Pembayaran {
-  id_pembayaran       Int      @id @default(autoincrement())
+  id_pembayaran       Int              @id @default(autoincrement())
   penyedia            String
-  status              String
+  status              StatusPembayaran
   jumlah              Int
   referensi_transaksi String?
-  dibuat_pada         DateTime @default(now())
-  id_pesanan          Int      @unique
+  dibuat_pada         DateTime         @default(now())
+  id_pesanan          Int              @unique
 
   pesanan Pesanan @relation(fields: [id_pesanan], references: [id_pesanan])
 
