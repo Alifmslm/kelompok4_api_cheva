@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Peran {
+  admin
+  seller
+  buyer
+}
+
+model Pengguna {
+  id_pengguna   Int      @id @default(autoincrement())
+  nama          String
+  email         String   @unique
+  kata_sandi    String
+  peran         Peran
+  dibuat_pada   DateTime @default(now())
+  nomor_telepon String?
+  foto_profil   String?
+
+  alamat_buyer   Alamat_Buyer[]
+  profil_umkm    Profil_UMKM?
+  log_verifikasi Log_Verifikasi[] @relation("AdminVerifikasi")
+  keranjang      Keranjang?
+  pesanan        Pesanan[]
+
+  @@map("pengguna")
+}
+
+model Alamat_Buyer {
+  id_alamat      Int      @id @default(autoincrement())
+  label_alamat   String
+  nama_penerima  String
+  alamat_lengkap String   @db.Text
+  negara         String
+  alamat_utama   Boolean
+  nomor_telepon  String
+  foto_profil    String?
+  id_pengguna    Int
+
+  pengguna Pengguna  @relation(fields: [id_pengguna], references: [id_pengguna])
+  pesanan  Pesanan[]
+
+  @@map("alamat_buyer")
+}
+
+model Profil_UMKM {
+  id_umkm              Int       @id @default(autoincrement())
+  nama_usaha           String
+  url_dokumen_legalitas String
+  status_verifikasi    String
+  alamat               String    @db.Text
+  latitude             Float?
+  longitude            Float?
+  diajukan_pada        DateTime  @default(now())
+  diverifikasi_pada    DateTime?
+  id_pengguna          Int       @unique
+
+  pengguna       Pengguna         @relation(fields: [id_pengguna], references: [id_pengguna])
+  log_verifikasi Log_Verifikasi[]
+  produk         Produk[]
+
+  @@map("profil_umkm")
+}
+
+model Log_Verifikasi {
+  id_log      Int      @id @default(autoincrement())
+  aksi        String
+  alasan      String?  @db.Text
+  dibuat_pada DateTime @default(now())
+  id_umkm     Int
+  id_admin    Int
+
+  profil_umkm Profil_UMKM @relation(fields: [id_umkm], references: [id_umkm])
+  admin       Pengguna    @relation("AdminVerifikasi", fields: [id_admin], references: [id_pengguna])
+
+  @@map("log_verifikasi")
+}
+
+model Produk {
+  id_produk       Int      @id @default(autoincrement())
+  nama            String
+  deskripsi       String?  @db.Text
+  harga           Int
+  stok            Int
+  url_gambar      String?
+  dibuat_pada     DateTime @default(now())
+  diperbarui_pada DateTime @updatedAt
+  berat_gram      Int
+  id_umkm         Int
+
+  profil_umkm    Profil_UMKM      @relation(fields: [id_umkm], references: [id_umkm])
+  item_keranjang Item_Keranjang[]
+  item_pesanan   Item_Pesanan[]
+
+  @@map("produk")
+}
+
+model Keranjang {
+  id_keranjang Int      @id @default(autoincrement())
+  dibuat_pada  DateTime @default(now())
+  id_pengguna  Int      @unique
+
+  pengguna       Pengguna         @relation(fields: [id_pengguna], references: [id_pengguna])
+  item_keranjang Item_Keranjang[]
+
+  @@map("keranjang")
+}
+
+model Item_Keranjang {
+  id_item_keranjang Int @id @default(autoincrement())
+  jumlah            Int
+  id_keranjang      Int
+  id_produk         Int
+
+  keranjang Keranjang @relation(fields: [id_keranjang], references: [id_keranjang])
+  produk    Produk    @relation(fields: [id_produk], references: [id_produk])
+
+  @@map("item_keranjang")
+}
+
+model Pesanan {
+  id_pesanan      Int      @id @default(autoincrement())
+  status          String
+  total_harga     Int
+  dibuat_pada     DateTime @default(now())
+  diperbarui_pada DateTime @updatedAt
+  kurir           String?
+  ongkos_kirim    Int
+  kode_resi       String?
+  id_pengguna     Int
+  id_alamat       Int
+
+  pengguna     Pengguna       @relation(fields: [id_pengguna], references: [id_pengguna])
+  alamat_buyer Alamat_Buyer   @relation(fields: [id_alamat], references: [id_alamat])
+  item_pesanan Item_Pesanan[]
+  pembayaran   Pembayaran?
+
+  @@map("pesanan")
+}
+
+model Item_Pesanan {
+  id_item_pesanan Int @id @default(autoincrement())
+  jumlah          Int
+  harga           Int
+  id_pesanan      Int
+  id_produk       Int
+
+  pesanan Pesanan @relation(fields: [id_pesanan], references: [id_pesanan])
+  produk  Produk  @relation(fields: [id_produk], references: [id_produk])
+
+  @@map("item_pesanan")
+}
+
+model Pembayaran {
+  id_pembayaran       Int      @id @default(autoincrement())
+  penyedia            String
+  status              String
+  jumlah              Int
+  referensi_transaksi String?
+  dibuat_pada         DateTime @default(now())
+  id_pesanan          Int      @unique
+
+  pesanan Pesanan @relation(fields: [id_pesanan], references: [id_pesanan])
+
+  @@map("pembayaran")
+}
