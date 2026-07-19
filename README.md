@@ -44,6 +44,33 @@ API ini dikonsumsi oleh aplikasi mobile dan dashboard web, dibangun dengan Expre
    ```
    Isi seluruh value di `.env` (database credentials, JWT secret, Stripe key, Cloudinary key). Lihat [`.env.example`](./.env.example) untuk daftar variable yang dibutuhkan.
 
+4. **Setup database MySQL lokal**
+   - Pastikan MySQL sudah terinstall dan running
+   - Buat database baru:
+     ```sql
+     CREATE DATABASE kelompok4_db;
+     ```
+   - Update `DATABASE_URL` di `.env` dengan format:
+     ```
+     DATABASE_URL="mysql://username:password@localhost:3306/kelompok4_db"
+     ```
+
+5. **Generate Prisma Client**
+   ```bash
+   npx prisma generate
+   ```
+
+6. **Jalankan migrasi database**
+   ```bash
+   npx prisma migrate dev
+   ```
+   Ini akan membuat tabel-tabel yang diperlukan berdasarkan schema Prisma.
+
+7. **Jalankan server**
+   ```bash
+   npm run dev
+   ```
+
 ## Struktur Project
 
 Lihat [`ARCHITECTURE.md`](./ARCHITECTURE.md) untuk penjelasan lengkap struktur folder dan alur request antar layer.
