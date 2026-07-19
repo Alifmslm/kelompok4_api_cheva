@@ -30,3 +30,4 @@ coverage/
 # Uploads sementara (kalau ada folder upload lokal sebelum ke Cloudinary)
 tmp/
 uploads/
+/src/generated/prisma
