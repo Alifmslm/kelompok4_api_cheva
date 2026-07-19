@@ -33,7 +33,7 @@ CREATE TABLE `profil_umkm` (
     `id_umkm` INTEGER NOT NULL AUTO_INCREMENT,
     `nama_usaha` VARCHAR(191) NOT NULL,
     `url_dokumen_legalitas` VARCHAR(191) NOT NULL,
-    `status_verifikasi` VARCHAR(191) NOT NULL,
+    `status_verifikasi` ENUM('pending', 'under_review', 'approved', 'rejected') NOT NULL,
     `alamat` TEXT NOT NULL,
     `latitude` DOUBLE NULL,
     `longitude` DOUBLE NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `profil_umkm` (
 -- CreateTable
 CREATE TABLE `log_verifikasi` (
     `id_log` INTEGER NOT NULL AUTO_INCREMENT,
-    `aksi` VARCHAR(191) NOT NULL,
+    `aksi` ENUM('review', 'approve', 'reject') NOT NULL,
     `alasan` TEXT NULL,
     `dibuat_pada` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `id_umkm` INTEGER NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE `item_keranjang` (
 -- CreateTable
 CREATE TABLE `pesanan` (
     `id_pesanan` INTEGER NOT NULL AUTO_INCREMENT,
-    `status` VARCHAR(191) NOT NULL,
+    `status` ENUM('pending_payment', 'processing', 'shipped', 'completed', 'cancelled') NOT NULL,
     `total_harga` INTEGER NOT NULL,
     `dibuat_pada` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `diperbarui_pada` DATETIME(3) NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE `item_pesanan` (
 CREATE TABLE `pembayaran` (
     `id_pembayaran` INTEGER NOT NULL AUTO_INCREMENT,
     `penyedia` VARCHAR(191) NOT NULL,
-    `status` VARCHAR(191) NOT NULL,
+    `status` ENUM('pending', 'paid', 'failed') NOT NULL,
     `jumlah` INTEGER NOT NULL,
     `referensi_transaksi` VARCHAR(191) NULL,
     `dibuat_pada` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
