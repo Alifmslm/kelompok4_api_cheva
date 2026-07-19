@@ -1,1 +1,8 @@
-// menggabung dan mendaftarkan semua route dengan prefix /api/v1
+const express = require('express');
+const authRoutes = require('./auth.routes');
+
+const router = express.Router();
+
+router.use('/auth', authRoutes);
+
+module.exports = router;
