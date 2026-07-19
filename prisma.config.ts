@@ -7,8 +7,9 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
+    seed: "node prisma/seed.js",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: process.env["mysql://root:@127.0.0.1:3306/tubesCheva_db"],
   },
 });
