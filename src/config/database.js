@@ -15,4 +15,12 @@ const adapter = new PrismaMariaDb({
 
 const prisma = new PrismaClient({ adapter });
 
+Object.defineProperties(prisma, {
+    profil_umkm:    { get: () => prisma.profil_UMKM },
+    log_verifikasi: { get: () => prisma.log_Verifikasi },
+    alamat_buyer:   { get: () => prisma.alamat_Buyer },
+    item_keranjang: { get: () => prisma.item_Keranjang },
+    item_pesanan:   { get: () => prisma.item_Pesanan },
+});
+
 module.exports = prisma;

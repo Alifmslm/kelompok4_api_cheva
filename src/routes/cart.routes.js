@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cart.controller');
 const { authenticate } = require('../middlewares/auth.middleware');
-const { validateCartItem, validateUpdateQuantity } = require('../validation/cart.validation');
+const { validateCartItem, validateUpdateQuantity } = require('../validations/cart.validation');
 const { cartLimiter, cartMutationLimiter } = require('../middlewares/rateLimiter/cart.limiter');
 
 /**
