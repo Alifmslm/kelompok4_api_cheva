@@ -3,6 +3,7 @@ const express = require('express');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/errorHandler.middleware');
 const setupSwagger = require('./config/swagger');
+const globalLimiter = require('./middlewares/rateLimiter/index.limiter');
 
 const app = express();
 
@@ -19,3 +20,5 @@ setupSwagger(app);
 app.use(errorHandler);
 
 module.exports = app;
+
+app.use(globalLimiter);

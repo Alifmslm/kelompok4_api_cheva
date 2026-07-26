@@ -3,6 +3,7 @@ const router = express.Router();
 const cartController = require('../controllers/cart.controller');
 const { authenticate } = require('../middlewares/auth.middleware');
 const { validateCartItem, validateUpdateQuantity } = require('../validation/cart.validation');
+const { cartLimiter, cartMutationLimiter } = require('../middlewares/rateLimiter/cart.limiter');
 
 /**
  * @swagger
@@ -13,7 +14,7 @@ const { validateCartItem, validateUpdateQuantity } = require('../validation/cart
 
 /**
  * @swagger
- * /v1/cart:
+ * cart:
  *   get:
  *     summary: Ambil isi cart user
  *     tags: [Cart]
@@ -58,11 +59,11 @@ const { validateCartItem, validateUpdateQuantity } = require('../validation/cart
  *       401:
  *         description: Unauthorized
  */
-router.get('/v1/cart', authenticate, cartController.getCart);
+router.get('cart', cartLimiter, authenticate, cartController.getCart);
 
 /**
  * @swagger
- * /v1/cart/items:
+ * cart/items:
  *   post:
  *     summary: Tambah item ke cart
  *     tags: [Cart]
@@ -115,11 +116,11 @@ router.get('/v1/cart', authenticate, cartController.getCart);
  *       404:
  *         description: Produk tidak ditemukan
  */
-router.post('/v1/cart/items', authenticate, validateCartItem, cartController.addItem);
+router.post('cart/items', cartMutationLimiter, authenticate, validateCartItem, cartController.addItem);
 
 /**
  * @swagger
- * /v1/cart/items/{id}:
+ * cart/items/{id}:
  *   patch:
  *     summary: Ubah quantity item di cart
  *     tags: [Cart]
@@ -173,11 +174,11 @@ router.post('/v1/cart/items', authenticate, validateCartItem, cartController.add
  *       404:
  *         description: Item tidak ditemukan
  */
-router.patch('/v1/cart/items/:id', authenticate, validateUpdateQuantity, cartController.updateQuantity);
+router.patch('cart/items/:id', cartMutationLimiter, authenticate, validateUpdateQuantity, cartController.updateQuantity);
 
 /**
  * @swagger
- * /v1/cart/items/{id}:
+ * cart/items/{id}:
  *   delete:
  *     summary: Hapus item dari cart
  *     tags: [Cart]
@@ -211,11 +212,11 @@ router.patch('/v1/cart/items/:id', authenticate, validateUpdateQuantity, cartCon
  *       404:
  *         description: Item tidak ditemukan
  */
-router.delete('/v1/cart/items/:id', authenticate, cartController.deleteItem);
+router.delete('cart/items/:id', cartMutationLimiter, authenticate, cartController.deleteItem);
 
 /**
  * @swagger
- * /v1/cart:
+ * cart:
  *   delete:
  *     summary: Kosongkan cart
  *     tags: [Cart]
@@ -240,6 +241,6 @@ router.delete('/v1/cart/items/:id', authenticate, cartController.deleteItem);
  *       401:
  *         description: Unauthorized
  */
-router.delete('/v1/cart', authenticate, cartController.clearCart);
+router.delete('cart', cartMutationLimiter, authenticate, cartController.clearCart);
 
 module.exports = router;
