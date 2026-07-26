@@ -1,11 +1,7 @@
 const ApiError = require('../utils/ApiError');
 
 const validateCommodityQuery = (req, res, next) => {
-  const { category, search, page, limit } = req.query;
-
-  if (category && typeof category !== 'string') {
-    throw new ApiError(400, 'Category harus berupa string');
-  }
+  const { search, page, limit } = req.query;
 
   if (search && typeof search !== 'string') {
     throw new ApiError(400, 'Search keyword harus berupa string');

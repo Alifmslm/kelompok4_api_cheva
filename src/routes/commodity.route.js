@@ -7,27 +7,22 @@ const { commodityLimiter } = require('../middlewares/rateLimiter/commodity.limit
 /**
  * @swagger
  * tags:
- *   name: Commodity
- *   description: Manajemen commodity dan kategori
+ *   name: Products
+ *   description: Manajemen produk
  */
 
 /**
  * @swagger
- * commodities:
+ * /products:
  *   get:
- *     summary: Ambil daftar commodity dengan filter dan search
- *     tags: [Commodity]
+ *     summary: Ambil daftar produk dengan filter dan search
+ *     tags: [Products]
  *     parameters:
- *       - in: query
- *         name: category
- *         schema:
- *           type: string
- *         description: Filter berdasarkan kategori slug
  *       - in: query
  *         name: search
  *         schema:
  *           type: string
- *         description: Keyword untuk mencari commodity
+ *         description: Keyword untuk mencari produk
  *       - in: query
  *         name: page
  *         schema:
@@ -45,7 +40,7 @@ const { commodityLimiter } = require('../middlewares/rateLimiter/commodity.limit
  *         description: Jumlah data per halaman
  *     responses:
  *       200:
- *         description: Berhasil mengambil daftar commodity
+ *         description: Berhasil mengambil daftar produk
  *         content:
  *           application/json:
  *             schema:
@@ -56,11 +51,11 @@ const { commodityLimiter } = require('../middlewares/rateLimiter/commodity.limit
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: Daftar commodity berhasil diambil
+ *                   example: Daftar produk berhasil diambil
  *                 data:
  *                   type: object
  *                   properties:
- *                     commodities:
+ *                     products:
  *                       type: array
  *                       items:
  *                         type: object
@@ -69,22 +64,22 @@ const { commodityLimiter } = require('../middlewares/rateLimiter/commodity.limit
  *                             type: integer
  *                           name:
  *                             type: string
- *                           slug:
- *                             type: string
  *                           description:
  *                             type: string
  *                           price:
- *                             type: number
- *                           unit:
+ *                             type: integer
+ *                           stock:
+ *                             type: integer
+ *                           image:
  *                             type: string
- *                           category:
+ *                           weight:
+ *                             type: integer
+ *                           seller:
  *                             type: object
  *                             properties:
  *                               id:
  *                                 type: integer
  *                               name:
- *                                 type: string
- *                               slug:
  *                                 type: string
  *                     pagination:
  *                       type: object
@@ -100,24 +95,24 @@ const { commodityLimiter } = require('../middlewares/rateLimiter/commodity.limit
  *       400:
  *         description: Parameter query tidak valid
  */
-router.get('commodities', commodityLimiter, validateCommodityQuery, commodityController.getCommodities);
+router.get('/products', commodityLimiter, validateCommodityQuery, commodityController.getCommodities);
 
 /**
  * @swagger
- * commodities/{id}:
+ * /products/{id}:
  *   get:
- *     summary: Detail commodity
- *     tags: [Commodity]
+ *     summary: Detail produk
+ *     tags: [Products]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID commodity
+ *         description: ID produk
  *     responses:
  *       200:
- *         description: Berhasil mengambil detail commodity
+ *         description: Berhasil mengambil detail produk
  *         content:
  *           application/json:
  *             schema:
@@ -128,155 +123,29 @@ router.get('commodities', commodityLimiter, validateCommodityQuery, commodityCon
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: Detail commodity berhasil diambil
+ *                   example: Detail produk berhasil diambil
  *                 data:
  *                   type: object
  *                   properties:
- *                     id:
+ *                     id_produk:
  *                       type: integer
- *                     name:
+ *                     nama:
  *                       type: string
- *                     slug:
+ *                     deskripsi:
  *                       type: string
- *                     description:
+ *                     harga:
+ *                       type: integer
+ *                     stok:
+ *                       type: integer
+ *                     url_gambar:
  *                       type: string
- *                     price:
- *                       type: number
- *                     unit:
+ *                     berat_gram:
+ *                       type: integer
+ *                     seller:
  *                       type: string
- *                     category:
- *                       type: object
- *                       properties:
- *                         id:
- *                           type: integer
- *                         name:
- *                           type: string
- *                         slug:
- *                           type: string
  *       404:
- *         description: Commodity tidak ditemukan
+ *         description: Produk tidak ditemukan
  */
-router.get('commodities/:id', commodityLimiter, commodityController.getCommodityById);
-
-/**
- * @swagger
- * categories:
- *   get:
- *     summary: Ambil daftar kategori
- *     tags: [Commodity]
- *     responses:
- *       200:
- *         description: Berhasil mengambil daftar kategori
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 message:
- *                   type: string
- *                   example: Daftar kategori berhasil diambil
- *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                       name:
- *                         type: string
- *                       slug:
- *                         type: string
- *                       description:
- *                         type: string
- */
-router.get('categories', commodityLimiter, commodityController.getCategories);
-
-/**
- * @swagger
- * categories/{id}/commodities:
- *   get:
- *     summary: Ambil commodity berdasarkan kategori
- *     tags: [Commodity]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID kategori
- *       - in: query
- *         name: page
- *         schema:
- *           type: integer
- *           minimum: 1
- *           default: 1
- *         description: Halaman
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           minimum: 1
- *           maximum: 100
- *           default: 10
- *         description: Jumlah data per halaman
- *     responses:
- *       200:
- *         description: Berhasil mengambil commodity berdasarkan kategori
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 message:
- *                   type: string
- *                   example: Commodity berdasarkan kategori berhasil diambil
- *                 data:
- *                   type: object
- *                   properties:
- *                     category:
- *                       type: object
- *                       properties:
- *                         id:
- *                           type: integer
- *                         name:
- *                           type: string
- *                         slug:
- *                           type: string
- *                     commodities:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           id:
- *                             type: integer
- *                           name:
- *                             type: string
- *                           slug:
- *                             type: string
- *                           price:
- *                             type: number
- *                           unit:
- *                             type: string
- *                     pagination:
- *                       type: object
- *                       properties:
- *                         page:
- *                           type: integer
- *                         limit:
- *                           type: integer
- *                         total:
- *                           type: integer
- *                         totalPages:
- *                           type: integer
- *       404:
- *         description: Kategori tidak ditemukan
- */
-router.get('categories/:id/commodities', commodityLimiter, commodityController.getCommoditiesByCategory);
+router.get('/products/:id', commodityLimiter, commodityController.getCommodityById);
 
 module.exports = router;

@@ -10,6 +10,8 @@ const app = express();
 // Parsing JSON body
 app.use(express.json());
 
+app.use(globalLimiter);
+
 // Mount semua route
 app.use('/api/v1', routes);
 
@@ -20,5 +22,3 @@ setupSwagger(app);
 app.use(errorHandler);
 
 module.exports = app;
-
-app.use(globalLimiter);

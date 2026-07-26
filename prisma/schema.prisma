@@ -39,6 +39,26 @@ enum StatusPembayaran {
   failed
 }
 
+enum KategoriProduk {
+  teh
+  kopi
+  kerajinan_tangan
+  makanan_ringan
+  pakaian_batik
+  furniture_bambu
+  produk_olahan_susu
+  madu
+  keripik
+  dodol
+  anyaman
+  tas_rajut
+  sepatu_kulit
+  aksesoris
+  tanaman_hias
+  pupuk_organik
+  lainnya
+}
+
 model Pengguna {
   id_pengguna   Int      @id @default(autoincrement())
   nama          String
@@ -109,14 +129,15 @@ model Log_Verifikasi {
 }
 
 model Produk {
-  id_produk       Int      @id @default(autoincrement())
+  id_produk       Int             @id @default(autoincrement())
   nama            String
-  deskripsi       String?  @db.Text
+  deskripsi       String?         @db.Text
   harga           Int
   stok            Int
   url_gambar      String?
-  dibuat_pada     DateTime @default(now())
-  diperbarui_pada DateTime @updatedAt
+  kategori        KategoriProduk
+  dibuat_pada     DateTime        @default(now())
+  diperbarui_pada DateTime        @updatedAt
   berat_gram      Int
   id_umkm         Int
 

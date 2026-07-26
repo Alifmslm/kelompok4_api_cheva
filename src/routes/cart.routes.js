@@ -14,7 +14,7 @@ const { cartLimiter, cartMutationLimiter } = require('../middlewares/rateLimiter
 
 /**
  * @swagger
- * cart:
+ * /cart:
  *   get:
  *     summary: Ambil isi cart user
  *     tags: [Cart]
@@ -59,11 +59,11 @@ const { cartLimiter, cartMutationLimiter } = require('../middlewares/rateLimiter
  *       401:
  *         description: Unauthorized
  */
-router.get('cart', cartLimiter, authenticate, cartController.getCart);
+router.get('/cart', cartLimiter, authenticate, cartController.getCart);
 
 /**
  * @swagger
- * cart/items:
+ * /cart/items:
  *   post:
  *     summary: Tambah item ke cart
  *     tags: [Cart]
@@ -116,11 +116,11 @@ router.get('cart', cartLimiter, authenticate, cartController.getCart);
  *       404:
  *         description: Produk tidak ditemukan
  */
-router.post('cart/items', cartMutationLimiter, authenticate, validateCartItem, cartController.addItem);
+router.post('/cart/items', cartMutationLimiter, authenticate, validateCartItem, cartController.addItem);
 
 /**
  * @swagger
- * cart/items/{id}:
+ * /cart/items/{id}:
  *   patch:
  *     summary: Ubah quantity item di cart
  *     tags: [Cart]
@@ -174,11 +174,11 @@ router.post('cart/items', cartMutationLimiter, authenticate, validateCartItem, c
  *       404:
  *         description: Item tidak ditemukan
  */
-router.patch('cart/items/:id', cartMutationLimiter, authenticate, validateUpdateQuantity, cartController.updateQuantity);
+router.patch('/cart/items/:id', cartMutationLimiter, authenticate, validateUpdateQuantity, cartController.updateQuantity);
 
 /**
  * @swagger
- * cart/items/{id}:
+ * /cart/items/{id}:
  *   delete:
  *     summary: Hapus item dari cart
  *     tags: [Cart]
@@ -212,11 +212,11 @@ router.patch('cart/items/:id', cartMutationLimiter, authenticate, validateUpdate
  *       404:
  *         description: Item tidak ditemukan
  */
-router.delete('cart/items/:id', cartMutationLimiter, authenticate, cartController.deleteItem);
+router.delete('/cart/items/:id', cartMutationLimiter, authenticate, cartController.deleteItem);
 
 /**
  * @swagger
- * cart:
+ * /cart:
  *   delete:
  *     summary: Kosongkan cart
  *     tags: [Cart]
@@ -241,6 +241,6 @@ router.delete('cart/items/:id', cartMutationLimiter, authenticate, cartControlle
  *       401:
  *         description: Unauthorized
  */
-router.delete('cart', cartMutationLimiter, authenticate, cartController.clearCart);
+router.delete('/cart', cartMutationLimiter, authenticate, cartController.clearCart);
 
 module.exports = router;

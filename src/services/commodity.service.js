@@ -13,7 +13,7 @@ const getCommodities = async ({ category, search, page, limit }) => {
   const { products, total } = await ProdukModel.findAllWithFilter(filter, limit, offset);
   
   return {
-    commodities: products,
+    products,
     pagination: {
       page,
       limit,
@@ -33,17 +33,7 @@ const getCommodityById = async (id) => {
   return product;
 };
 
-const getCategories = async () => {
-  return [];
-};
-
-const getCommoditiesByCategory = async (categoryId, { page, limit }) => {
-  throw new ApiError(501, 'Fitur kategori belum tersedia');
-};
-
 module.exports = {
   getCommodities,
-  getCommodityById,
-  getCategories,
-  getCommoditiesByCategory
+  getCommodityById
 };

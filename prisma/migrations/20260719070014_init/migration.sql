@@ -65,6 +65,7 @@ CREATE TABLE `produk` (
     `harga` INTEGER NOT NULL,
     `stok` INTEGER NOT NULL,
     `url_gambar` VARCHAR(191) NULL,
+    `kategori` ENUM('teh', 'kopi', 'kerajinan_tangan', 'makanan_ringan', 'pakaian_batik', 'furniture_bambu', 'produk_olahan_susu', 'madu', 'keripik', 'dodol', 'anyaman', 'tas_rajut', 'sepatu_kulit', 'aksesoris', 'tanaman_hias', 'pupuk_organik', 'lainnya') NOT NULL,
     `dibuat_pada` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `diperbarui_pada` DATETIME(3) NOT NULL,
     `berat_gram` INTEGER NOT NULL,
