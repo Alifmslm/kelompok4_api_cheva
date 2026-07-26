@@ -355,10 +355,40 @@ const cancelOrder = async (userId, orderId) => {
   };
 };
 
+const getOrderStatus = async (userId, orderId) => {
+  const order = await prisma.pesanan.findUnique({
+    where: { id_pesanan: orderId },
+    include: {
+      pembayaran: {
+        select: {
+          status: true
+        }
+      }
+    }
+  });
+
+  if (!order) {
+    throw new ApiError(404, 'Order tidak ditemukan');
+  }
+
+  if (order.id_pengguna !== userId) {
+    throw new ApiError(403, 'Tidak memiliki akses ke order ini');
+  }
+
+  return {
+    id_pesanan: order.id_pesanan,
+    status: order.status,
+    diperbarui_pada: order.diperbarui_pada,
+    kode_resi: order.kode_resi,
+    payment_status: order.pembayaran ? order.pembayaran.status : null
+  };
+};
+
 module.exports = {
   checkoutFromCart,
   createDirectOrder,
   getOrders,
   getOrderById,
-  cancelOrder
+  cancelOrder,
+  getOrderStatus
 };

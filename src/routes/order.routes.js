@@ -339,4 +339,56 @@ router.get('/orders/:id', orderLimiter, authenticate, orderController.getOrderBy
  */
 router.patch('/orders/:id/cancel', orderMutationLimiter, authenticate, validateCancelOrder, orderController.cancelOrder);
 
+/**
+ * @swagger
+ * /orders/{id}/status:
+ *   get:
+ *     summary: Cek status terbaru order (untuk polling)
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID order
+ *     responses:
+ *       200:
+ *         description: Berhasil mengambil status order
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Status order berhasil diambil
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id_pesanan:
+ *                       type: integer
+ *                     status:
+ *                       type: string
+ *                       enum: [pending_payment, processing, shipped, completed, cancelled]
+ *                     diperbarui_pada:
+ *                       type: string
+ *                       format: date-time
+ *                     kode_resi:
+ *                       type: string
+ *                     payment_status:
+ *                       type: string
+ *                       enum: [pending, paid, failed]
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Order tidak ditemukan
+ */
+router.get('/orders/:id/status', orderLimiter, authenticate, validateCancelOrder, orderController.getOrderStatus);
+
 module.exports = router;
