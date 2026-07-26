@@ -79,10 +79,24 @@ const cancelOrder = async (req, res, next) => {
   }
 };
 
+const getOrderStatus = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const orderId = parseInt(req.params.id);
+    
+    const status = await orderService.getOrderStatus(userId, orderId);
+    
+    return apiResponse.success(res, 200, 'Status order berhasil diambil', status);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   checkout,
   createOrder,
   getOrders,
   getOrderById,
-  cancelOrder
+  cancelOrder,
+  getOrderStatus
 };
