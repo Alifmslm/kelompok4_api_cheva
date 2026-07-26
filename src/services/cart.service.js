@@ -1,5 +1,5 @@
 const CartModel = require('../models/cart.model');
-const ProductModel = require('../models/product.model');
+const ProdukModel = require('../models/produk.model');
 const ApiError = require('../utils/ApiError');
 
 const getCart = async (userId) => {
@@ -23,13 +23,13 @@ const getCart = async (userId) => {
 };
 
 const addItem = async (userId, productId, quantity) => {
-  const product = await ProductModel.findById(productId);
+  const product = await ProdukModel.findById(productId);
   
   if (!product) {
     throw new ApiError(404, 'Produk tidak ditemukan');
   }
 
-  if (product.stock < quantity) {
+  if (product.stok < quantity) {
     throw new ApiError(400, 'Stok produk tidak mencukupi');
   }
 
@@ -38,7 +38,7 @@ const addItem = async (userId, productId, quantity) => {
   if (existingItem) {
     const newQuantity = existingItem.quantity + quantity;
     
-    if (product.stock < newQuantity) {
+    if (product.stok < newQuantity) {
       throw new ApiError(400, 'Stok produk tidak mencukupi');
     }
     
@@ -59,9 +59,13 @@ const updateQuantity = async (userId, itemId, quantity) => {
     throw new ApiError(403, 'Tidak memiliki akses ke item ini');
   }
 
-  const product = await ProductModel.findById(cartItem.productId);
+  const product = await ProdukModel.findById(cartItem.productId);
   
-  if (product.stock < quantity) {
+  if (!product) {
+    throw new ApiError(404, 'Produk tidak ditemukan');
+  }
+
+  if (product.stok < quantity) {
     throw new ApiError(400, 'Stok produk tidak mencukupi');
   }
 
