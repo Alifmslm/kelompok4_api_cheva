@@ -15,6 +15,10 @@ const errorHandler = (err, req, res, next) => {
     error = new ApiError(400, `Data untuk field ${field} sudah digunakan (harus unik).`);
   }
 
+  if (err.code === 'P2003') {
+    error = new ApiError(400, 'Tindakan ditolak! Data ini tidak bisa dihapus karena masih terhubung dengan data lain yang aktif (misal: Pesanan atau Keranjang).');
+  }
+
   // Fallback untuk unhandled error
   if (!error.isOperational && error.statusCode === 500) {
     console.error('ERROR:', err);
