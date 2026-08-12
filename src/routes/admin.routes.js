@@ -18,7 +18,7 @@ router.use(authenticate, authorize('admin'), adminLimiter);
 
 /**
  * @swagger
- * /api/v1/admin/verifications:
+ * /admin/verifications:
  *   get:
  *     summary: Lihat daftar pengajuan verifikasi UMKM
  *     tags: [Admin]
@@ -42,7 +42,7 @@ router.get('/verifications', adminController.getVerifications);
 
 /**
  * @swagger
- * /api/v1/admin/verifications/{id_umkm}:
+ * /admin/verifications/{id_umkm}:
  *   get:
  *     summary: Lihat detail pemeriksaan profil UMKM dan dokumen legalitas
  *     tags: [Admin]
@@ -68,7 +68,7 @@ router.get('/verifications/:id_umkm', adminController.getVerificationDetail);
 
 /**
  * @swagger
- * /api/v1/admin/verifications/{id_umkm}/verify:
+ * /admin/verifications/{id_umkm}/verify:
  *   post:
  *     summary: Eksekusi verifikasi UMKM (approve / reject / review)
  *     tags: [Admin]
@@ -114,7 +114,7 @@ router.post('/verifications/:id_umkm/verify', validate(verifySeller), adminContr
 
 /**
  * @swagger
- * /api/v1/admin/logs:
+ * /admin/logs:
  *   get:
  *     summary: Lihat riwayat audit log verifikasi UMKM oleh Admin
  *     tags: [Admin]

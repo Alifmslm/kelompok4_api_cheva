@@ -30,7 +30,7 @@ const { sellerLimiter, sellerMutationLimiter } = require('../middlewares/rateLim
 
 /**
  * @swagger
- * /api/v1/seller/suppliers/{id}:
+ * /seller/suppliers/{id}:
  *   get:
  *     summary: Detail UMKM/supplier (publik)
  *     tags: [Sellers]
@@ -51,7 +51,7 @@ router.get('/suppliers/:id', sellerLimiter, validateSupplierId, sellerController
 
 /**
  * @swagger
- * /api/v1/seller/suppliers/{id}/location:
+ * /seller/suppliers/{id}/location:
  *   get:
  *     summary: Ambil lokasi workshop supplier (publik)
  *     tags: [Sellers]
@@ -72,7 +72,7 @@ router.get('/suppliers/:id/location', sellerLimiter, validateSupplierId, sellerC
 
 /**
  * @swagger
- * /api/v1/seller/products/{id}/supplier:
+ * /seller/products/{id}/supplier:
  *   get:
  *     summary: Ambil supplier pemilik produk (publik)
  *     tags: [Sellers]
@@ -99,7 +99,7 @@ router.use(authenticate, authorize('seller'));
 
 /**
  * @swagger
- * /api/v1/seller/profile:
+ * /seller/profile:
  *   post:
  *     summary: Ajukan profil UMKM (beserta dokumen legalitas)
  *     tags: [Seller]
@@ -143,7 +143,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/seller/profile:
+ * /seller/profile:
  *   get:
  *     summary: Lihat profil toko UMKM sendiri
  *     tags: [Seller]
@@ -157,7 +157,7 @@ router.get('/profile', sellerLimiter, sellerController.getProfile);
 
 /**
  * @swagger
- * /api/v1/seller/profile:
+ * /seller/profile:
  *   put:
  *     summary: Perbarui data atau dokumen profil UMKM
  *     tags: [Seller]
@@ -198,7 +198,7 @@ router.put(
 
 /**
  * @swagger
- * /api/v1/seller/products:
+ * /seller/products:
  *   post:
  *     summary: Tambah produk baru ke katalog toko
  *     tags: [Seller]
@@ -241,7 +241,7 @@ router.post('/products', sellerMutationLimiter, upload.single('gambar'), validat
 
 /**
  * @swagger
- * /api/v1/seller/products:
+ * /seller/products:
  *   get:
  *     summary: Lihat daftar produk milik toko sendiri
  *     tags: [Seller]
@@ -255,7 +255,7 @@ router.get('/products', sellerLimiter, sellerController.getProducts);
 
 /**
  * @swagger
- * /api/v1/seller/products/{id}:
+ * /seller/products/{id}:
  *   get:
  *     summary: Detail produk toko sendiri
  *     tags: [Seller]
@@ -275,7 +275,7 @@ router.get('/products/:id', sellerLimiter, sellerController.getProductById);
 
 /**
  * @swagger
- * /api/v1/seller/products/{id}:
+ * /seller/products/{id}:
  *   put:
  *     summary: Ubah detail produk toko
  *     tags: [Seller]
@@ -323,7 +323,7 @@ router.put('/products/:id', sellerMutationLimiter, upload.single('gambar'), vali
 
 /**
  * @swagger
- * /api/v1/seller/products/{id}:
+ * /seller/products/{id}:
  *   delete:
  *     summary: Hapus produk dari katalog toko
  *     tags: [Seller]
@@ -343,7 +343,7 @@ router.delete('/products/:id', sellerMutationLimiter, sellerController.deletePro
 
 /**
  * @swagger
- * /api/v1/seller/orders:
+ * /seller/orders:
  *   get:
  *     summary: Lihat daftar pesanan sampel masuk ke toko
  *     tags: [Seller]
@@ -362,7 +362,7 @@ router.get('/orders', sellerLimiter, sellerController.getOrders);
 
 /**
  * @swagger
- * /api/v1/seller/orders/{id}:
+ * /seller/orders/{id}:
  *   get:
  *     summary: Lihat detail pesanan sampel masuk beserta alamat pengiriman
  *     tags: [Seller]
@@ -382,7 +382,7 @@ router.get('/orders/:id', sellerLimiter, sellerController.getOrderById);
 
 /**
  * @swagger
- * /api/v1/seller/orders/{id}/status:
+ * /seller/orders/{id}/status:
  *   patch:
  *     summary: Ubah status pesanan (misal dari processing ke shipped dengan melampirkan resi)
  *     tags: [Seller]
@@ -417,7 +417,7 @@ router.patch('/orders/:id/status', sellerMutationLimiter, validate(updateOrderSt
 
 /**
  * @swagger
- * /api/v1/seller/dashboard:
+ * /seller/dashboard:
  *   get:
  *     summary: Ambil data statistik untuk dasbor 3 KPI Card toko
  *     tags: [Seller]
