@@ -86,7 +86,6 @@ model Alamat_Buyer {
   negara         String
   alamat_utama   Boolean
   nomor_telepon  String
-  foto_profil    String?
   id_pengguna    Int
 
   pengguna Pengguna  @relation(fields: [id_pengguna], references: [id_pengguna])
@@ -99,6 +98,7 @@ model Profil_UMKM {
   id_umkm              Int                @id @default(autoincrement())
   nama_usaha           String
   url_dokumen_legalitas String
+  foto_profil          String?
   status_verifikasi    StatusVerifikasi
   alamat               String             @db.Text
   latitude             Float?
@@ -135,6 +135,8 @@ model Produk {
   harga           Int
   stok            Int
   url_gambar      String?
+  kapasitas_produksi String?
+  sertifikasi     String?
   kategori        KategoriProduk
   dibuat_pada     DateTime        @default(now())
   diperbarui_pada DateTime        @updatedAt

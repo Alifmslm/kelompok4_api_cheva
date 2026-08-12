@@ -6,7 +6,7 @@ const authValidation = require('../validations/auth.validation');
 
 /**
  * @swagger
- * /api/v1/auth/register/buyer:
+ * /auth/register/buyer:
  *   post:
  *     summary: Registrasi untuk Buyer (Aplikasi Mobile)
  *     tags: [Auth]
@@ -48,7 +48,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/auth/register/seller:
+ * /auth/register/seller:
  *   post:
  *     summary: Registrasi untuk Seller (Aplikasi Web)
  *     tags: [Auth]
@@ -90,7 +90,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/auth/login:
+ * /auth/login:
  *   post:
  *     summary: Login untuk mendapatkan JWT
  *     tags: [Auth]

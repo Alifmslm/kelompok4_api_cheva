@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(globalLimiter);
 
 // Mount semua route
-app.use('/api/v1', routes);
+app.use('/', routes);
 
 // Mount Swagger
 setupSwagger(app);
